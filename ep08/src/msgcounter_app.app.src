@@ -1,0 +1,25 @@
+%%% アプリケーション msgcounter_app の
+%%% 設定ファイルです
+%%% このファイルはrebar用のソースとして
+%%% msgcounter_app.app.src という名前にしていますが
+%%% 実際の設定ファイルは msgcounter_app.app という
+%%% 名前になります
+%%% 設定全体は1つのタプルとしてまとまっています
+{application, msgcounter_app,
+ [
+  % アプリケーションの説明です
+  {description, "Message counter application"},
+  % バージョン番号です
+  {vsn, "1"},
+  % アプリケーションに必要なモジュール名を列挙します
+  {modules, [msgcounter_app,
+             msgcounter_sup,
+             msgcounter_gen_server]},
+  % 登録済みプロセスの名前を列挙します
+  {registered, [msgcounter_sup]},
+  % 動作に必要な他のアプリケーションの名前を列挙します
+  % OTP標準アプリケーションのkernelとstdlibは最低限必要です
+  {applications, [kernel, stdlib]},
+  % コールバックするモジュール名を列挙します
+  {mod, {msgcounter_app,[]}}
+ ]}.
