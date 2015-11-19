@@ -1,0 +1,9 @@
+{application, msgcounter_table,
+ [
+  {description, "Message counter table application"},
+  {vsn, "1"},
+  {modules, [msgcounter_procdict,
+             msgcounter_ets]},
+  {registered, []},
+  {applications, [kernel, stdlib]}
+ ]}.
