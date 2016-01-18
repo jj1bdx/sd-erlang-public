@@ -1,0 +1,30 @@
+-*- coding: utf-8 -*-
+# （以下ホスト名"bigmac"というOS Xを実行している機器での例です）
+# コンパイルとディレクトリの初期化を行う
+端末A: rebar compile
+端末A: mkdir ./mnesia-alpha
+端末A: mkdir ./mnesia-bravo
+# 仮想マシンのノードをそれぞれ起動
+端末A: erl -sname alpha -pa ebin -mnesia dir '"./mnesia-alpha/"'
+端末B: erl -sname bravo -pa ebin -mnesia dir '"./mnesia-bravo/"'
+%%% 以下はErlangシェルで 
+%%% 分散ノード間接続のためのクッキーを設定
+端末AとB: erlang:set_cookie(node(), mnesia_test_cookie).
+%%% 分散ノード間の疎通を確認（これをしないとノードが確定しない）
+端末A: net_adm:ping(alpha@bigmac). 
+端末B: net_adm:ping(bravo@bigmac).
+%%% コンパイルしたオブジェクトとレコードのパターンを読み込む
+端末AとB: l(tinymt_params).
+端末AとB: rr(tinymt_params).
+%%% 最初の一度だけはMnesia起動前にMnesiaのスキーマを決める必要がある
+端末A: tinymt_params:first_time().
+%%% スキーマが決まったらMnesiaを起動できる
+端末AとB: mnesia:start().
+%%% Mnesiaのテーブルを作る
+%%% 分散ノード接続ができていればノードalphaとbravo双方にテーブルができる
+端末A: tinymt_params:init().
+%%% Mnesiaのテーブルに情報を書き込む
+%%% TinyMTのパラメータを一度変数にすべて読み込む
+端末A: {ok, Tablelist} = file:consult("tinymt32dc-rawtuples.txt").
+%%% 読みこんだレコードのリストをすべてMnesiaのテーブルに加える
+端末A: [tinymt_params:add_record(R) || R <- Tablelist].

@@ -1,0 +1,8 @@
+{application, tinymt_params,
+ [
+  {description, "TinyMT32 parameter choice application"},
+  {vsn, "1"},
+  {modules, [tinymt_params]},
+  {registered, []},
+  {applications, [kernel, stdlib, mnesia, sasl]}
+ ]}.
